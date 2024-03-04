@@ -1,0 +1,415 @@
+{%extends 'base.html'%} {%load thumbnail%} {%load store_tags%} {% block title %}
+{{product.name}} {% endblock title %} {%block content%}
+{% load static %}
+<!--
+<body>
+  <section class="wrapper">
+      <h1></h1>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+  </section>
+</body>
+-->
+{% comment %}
+<nav>
+  <ol class="breadcrumb mt-2">
+    <li class="breadcrumb-item">
+      <a href="{{product.category.get_absolute_url}}">{{product.category}}</a>
+    </li>
+    <li class="breadcrumb-item active">{{product.name}}</li>
+  </ol>
+</nav>
+<div class="row mt-2 mb-4">
+  <div class="col-lg-4 col-md-6 col-12">
+    <img
+      src="{% thumbnail product.image 500x0 %}"
+      alt="{{product.name}}"
+      class="img-fluid mx-auto d-block"
+    />
+  </div>
+  <div class="col-lg-8 col-md-6 col-12">
+    <h2 class="mt-md-0 mt-2">{{product.name}}</h2>
+    <h3 class="font-weight-light"> {{product.price|floatformat:3}} VND </h3>
+    <h4>
+      {% if product.availibility %}
+      <span class="badge badge-success">Stocking</span>
+      {% else %}
+      <span class="badge badge-danger">Out of stock</span>
+      {% endif %}
+    </h4>
+    <p>{{product.description}}</p>
+    <p>
+      Purchased by <b>{{product.total_purchases}}</b>
+      customers {{product.total_purchases|pluralize}}.
+    </p>
+    {% if user.is_authenticated %}
+    {% if product.id in cart.keys %}
+    <form action="{% url 'cart:add' %}" method="POST" style="max-width: 400px">
+      {% csrf_token %}
+      <input type="hidden" name="product_id" value="{{product.id}}">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Quantity</span>
+        </div>
+        <input
+          type="number"
+          min="1"
+          name="quantity"
+          value="{{cart|getattr:product.id}}"
+          required="required"
+          class="form-control"
+        />
+        <div class="input-group-append btn-group">
+          <button class="btn btn-primary" type="submit">
+            <i class="fa fa-cart-plus fa-lg mr-2"></i> Edit
+          </button>
+          <a href="{% url 'cart:remove' product.id %}" class="btn btn-danger">
+            <i class="fa fa-times fa-lg mr-2"></i> Delete
+          </a>
+        </div>
+      </div>
+    </form>
+    {% elif product.availibility %}
+    <form method="POST" action="{% url 'cart:add' %}">
+      {% csrf_token %}
+      <input type="hidden" name="quantity" value="1" />
+      <input type="hidden" name="product_id" value="{{product.id}}" />
+      <button type="submit" class="btn btn-primary">
+        <i class="fa fa-cart-plus fa-lg mr-2"></i> Add to Cart
+      </button>
+    </form>
+    {% else %}
+    <button class="btn btn-primary" disabled>
+      <i class="fa fa-cart-plus fa-lg mr-2"></i> Add to Cart
+    </button>
+    {% endif %}
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-primary" disabled>
+      <i class="fa fa-sign-in fa-lg mr-2"></i> Log in to add to Cart
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+{% endcomment %}
+<section class="py-5">
+  <div class="container">
+    <div class="row gx-5">
+      <aside class="col-lg-6">
+        <div class="border rounded-4 mb-3 d-flex justify-content-center">
+          <img
+      src="{% thumbnail product.image 500x0 %}"
+      alt="{{product.name}}"
+      class="img-fluid mx-auto d-block"
+    />
+            <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="{{product.ImageURL}}" />
+          </a>
+        </div>
+       
+      </aside>
+      <main class="col-lg-6">
+        <div class="ps-lg-3">
+          <h4 class="title-center text-center text-dark">
+            {{product.name}}  <br />
+            Dynamic's Fashion
+          </h4>
+          <div class="d-flex flex-row my-3">
+            <div class="text-warning mb-1 me-2 text-center">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star-half"></i>
+              <span class="ms-1">
+                4.9
+              </span>
+            </div>
+            &#160; &#160; &#160; &#160; &#160;
+            <h5>
+            <span class="text-muted"><i class="fa fa-shopping-basket fa-sm mx-1"></i>
+              {{product.total_purchases}}</b> customers bought
+            </span>
+          </h5>
+            <br>
+            &#160; &#160; &#160; &#160; &#160;
+            <h4>
+              {% if product.availibility %}
+              <span class="badge badge-success">Stocking</span>
+              {% else %}
+              <span class="badge badge-danger">Out of stock</span>
+              {% endif %}
+            </h4>
+          </h4>
+          </div>
+
+          <div class="mb-3">
+            <span class="h5 font-weight-bold">{{product.price | floatformat:3}} VND </span>
+            <span class="text-muted">/per piece</span>
+          </div>
+
+          <p>
+            {{product.detail}}
+          </p>
+
+          <div class="row">
+            <dt class="col-3">Type</dt>
+            <dd class="col-9">Regular</dd>
+
+            <dt class="col-3">Color</dt>
+            <dd class="col-9">Choice</dd>
+
+            <dt class="col-3">Material</dt>
+            <dd class="col-9">{{product.material}}</dd>
+
+            <dt class="col-3">Brand</dt>
+            <dd class="col-9">{{product.branch}}</dd>
+          </div>
+
+          <hr />
+
+          <div class="row mb-3">
+            <div class="col-md-2 col-2">
+              <label class="col-3">Size</label>
+              <select class="form-select border border-secondary" style="height: 35px;">
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>XXL</option>
+              </select>
+            </div>
+            <!--COLOR--> 
+            <div class="col-md-5 col-2">
+
+              <label class="col-9">Color</label>
+              <select class="form-select border border-secondary" style="height: 35px;">
+                <option>Blue</option>
+                <option>Black</option>
+                <option>White</option>
+                <option>Gray</option>
+                <option>Pink</option>
+              </select>
+          </div>
+
+          
+
+          </div>
+
+    
+    {% if user.is_authenticated %}
+    {% if product.id in cart.keys %}
+    <form action="{% url 'cart:add' %}" method="POST" style="max-width: 400px">
+      {% csrf_token %}
+      <input type="hidden" name="product_id" value="{{product.id}}">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Quantity</span>
+        </div>
+        <input
+          type="number"
+          min="1"
+          name="quantity"
+          value="{{cart|getattr:product.id}}"
+          required="required"
+          class="form-control"
+        />
+        <div class="input-group-append btn-group">
+          <button class="btn btn-primary" type="submit">
+            <i class="fa fa-cart-plus fa-lg mr-2"></i> Edit
+          </button>
+          <a href="{% url 'cart:remove' product.id %}" class="btn btn-danger">
+            <i class="fa fa-times fa-lg mr-2"></i> Delete
+          </a>
+        </div>
+      </div>
+    </form>
+    {% elif product.availibility %}
+    <form method="POST" action="{% url 'cart:add' %}">
+      {% csrf_token %}
+      <input type="hidden" name="quantity" value="1" />
+      <input type="hidden" name="product_id" value="{{product.id}}" />
+      <button type="submit" class="btn btn-primary">
+        <i class="fa fa-cart-plus fa-lg mr-2"></i> Add to Cart
+      </button>
+    </form>
+    {% else %}
+    <button class="btn btn-primary" disabled>
+      <i class="fa fa-cart-plus fa-lg mr-2"></i> Add to Cart
+    </button>
+    {% endif %}
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-primary" disabled>
+      <i class="fa fa-sign-in fa-lg mr-2"></i> Log in to add to Cart
+    </a>
+    {% endif %}
+          
+    </div>
+      </main>
+    </div>
+  </div>
+</section>
+<!-- content -->
+
+<section class="bg-light border-top py-4">
+  <div class="container">
+    <div class="row gx-4">
+      <div class="col-lg-8 mb-4">
+        <div class="border rounded-2 px-3 py-2 bg-white">
+          <!-- Pills navs -->
+          <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+            <li class="nav-item d-flex" role="presentation">
+              <a class="nav-link d-flex align-items-center justify-content-center w-100 active" id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab" aria-controls="ex1-pills-1" aria-selected="true">Specification</a>
+            </li>
+            
+          </ul>
+          <!-- Pills navs -->
+
+          <!-- Pills content -->
+          <div class="tab-content" id="ex1-content">
+            <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel" aria-labelledby="ex1-tab-1">
+              <p>
+                {{product.description}}
+                
+              </p>
+              <div class="row mb-2">
+                <div class="col-12 col-md-6">
+                  <ul class="list-unstyled mb-0">
+                    <li><i class="fa fa-check text-success me-2"></i> {{product.characteristic1}}</li>
+                    <li><i class="fa fa-check text-success me-2"></i> Airy, Pleasant and Comfortable to wear</li>
+                    <li><i class="fa fa-check text-success me-2"></i> {{product.characteristic2}}</li>
+                    <li><i class="fa fa-check text-success me-2"></i> {{product.characteristic3}}</li>
+
+                  </ul>
+                </div>
+                <div class="col-12 col-md-6 mb-0">
+                  <ul class="list-unstyled">
+                    <li><i class="fa fa-check text-success me-2"></i> Easy fast and ver good</li>
+                    <li><i class="fa fa-check text-success me-2"></i> Some great feature name here</li>
+                    <li><i class="fa fa-check text-success me-2"></i> Modern style and design</li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <table class="table border mt-3 mb-2">
+                <tr>
+                  <th class="py-2">Tel/Hotline:</th>
+                  <td class="py-2"> 0111.111.111 / 0222.222.222 </td>
+                </tr>
+                <tr>
+                  <th class="py-2">Fanpage:</th>
+                  <td class="py-2">https://www.facebook.com/onlshop.vn/</td>
+                </tr>
+                <tr>
+                  <th class="py-2">Email:</th>
+                  <td class="py-2">onlshop01@gmail.comcom</td>
+                </tr>
+                <tr>
+                  <th class="py-2">Working Time</th>
+                  <td class="py-2">8 a.m-10 p.m (expect Sunday) </td>
+                </tr>
+                
+              </table>
+            </div>
+            <div class="tab-pane fade mb-2" id="ex1-pills-2" role="tabpanel" aria-labelledby="ex1-tab-2">
+              Tab content or sample information now <br />
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+              aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+              nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            </div>
+            <div class="tab-pane fade mb-2" id="ex1-pills-3" role="tabpanel" aria-labelledby="ex1-tab-3">
+              Another tab content or sample information now <br />
+              Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+              commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum.
+            </div>
+            <div class="tab-pane fade mb-2" id="ex1-pills-4" role="tabpanel" aria-labelledby="ex1-tab-4">
+              Some other tab content or sample information now <br />
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+              aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum.
+            </div>
+          </div>
+          <!-- Pills content -->
+        </div>
+      </div>
+
+
+      <div class="col-lg-4">
+        <div class="px-0 border rounded-2 shadow-0">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Suggest items</h5>
+
+              <div class="d-flex mb-3">
+                <a href="#" class="me-3">
+                  <img src="{% static 'images/Other/2.jpg' %}" style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                </a>
+                <div class="info">
+                  <a href="#" class="nav-link mb-1">
+                    Fleece Jacket
+                  </a>
+                  <strong class="text-dark"> &#160;&#160; 179.000 VND </strong>
+                </div>
+              </div>
+
+              <div class="d-flex mb-3">
+                <a href="#" class="me-3">
+                  <img src="{% static 'images/Other/3.png' %}" style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                </a>
+                <div class="info">
+                  <a href="#" class="nav-link mb-1">
+                    White Fur Coat 
+                  </a>
+                  <strong class="text-dark"> &#160;&#160; 209.000 VND </strong>
+                </div>
+              </div>
+
+              <div class="d-flex mb-3">
+                <a href="#" class="me-3">
+                  <img src="{% static 'images/Other/5.jfif' %}" style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                </a>
+                <div class="info">
+                  <a href="#" class="nav-link mb-1">
+                    Cute T-shirt
+                  </a>
+                  <strong class="text-dark"> &#160;&#160; 129.000 VND </strong>
+                </div>
+              </div>
+
+              <div class="d-flex mb-3">
+                <a href="#" class="me-3">
+                  <img src="{% static 'images/Other/4.jfif' %}" style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                </a>
+                <div class="info">
+                  <a href="#" class="nav-link mb-1">
+                    Simple T-shirt
+                  </a>
+                  <strong class="text-dark"> &#160;&#160; 189.000 VND </strong>
+                </div>
+              </div>
+                
+                  
+                
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section> 
+
+
+{% endblock content%}

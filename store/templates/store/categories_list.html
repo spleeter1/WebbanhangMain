@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block title %} Categories {% endblock title %}
+{%block content %}
+<div class="row my-2">
+  <!--
+  <body>
+    <section class="wrapper">
+        <h1></h1>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+    </section>
+  </body>
+-->
+  {% for c in categories %}
+  <div class="col-lg-3 col-md-6 col-12 my-2 px-sm-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h3 class="font-weight-light">
+          <a href="{{ c.get_absolute_path }}">{{c.name}}</a>
+        </h3>
+      </div>
+      <div class="card-footer">
+        {{c.num_products}} Product{{c.num_products|pluralize}}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}

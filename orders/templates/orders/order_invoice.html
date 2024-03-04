@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invoice Order - {{order.id}}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+  </head>
+  <!--
+  <body>
+    <section class="wrapper">
+        <h1></h1>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+        <div><span class="dot" style="color:blue"></span></div>
+    </section>
+  </body>
+-->
+  <body>
+    <div class="container my-4">
+      <h2>Order Code - {{order.id}}</h2>
+      <h4 class="mb-3">
+        Tới - {{order.user.first_name|default:order.user.username}}
+        {{order.user.last_name}}
+      </h4>
+      <h4 class="font-weight-light">{{order.address}}</h4>
+      <h4 class="font-weight-light mb-3">{{order.phone}}, {{order.email}}</h4>
+      <h5 class="font-weight-light mb-4">Placed on {{order.created}}</h5>
+      <hr />
+      <table class="table table-striped mt-4">
+        <thead class="table-dark">
+          <tr>
+            <td>Name </td>
+            <td>Price </td>
+            <td>Quantity</td>
+            <td>Total </td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in order.items.all %}
+          <tr>
+            <td>{{o.product.name}}</td>
+            <td>{{o.product.price | floatformat:3}} VND </td>
+            <td>{{o.quantity}}</td>
+            <td>{{o.total | floatformat:3}} VND </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"></td>
+            <td class="text-right">Total -</td>
+            <td>
+              <b>{{order.total_price| floatformat:3}} VND </b>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <h5>
+        Payment Status - {% if order.paid %}
+        <span class="badge badge-success">Paid</span>
+        {% else %}
+        <span class="badge badge-danger">Awaiting Payment</span>
+        {% endif %}
+      </h5>
+      <h5>Payment Methods - Payment upon delivery</h5>
+      <h5>Status - {{order.status}}</h5>
+    </div>
+    <footer class="text-center d-print-none">
+      <button class="btn btn-primary" onclick="window.print()">Print </button>
+      <button class="btn btn-danger" onclick="history.back()">Return to </button>
+    </footer>
+  </body>
+</html>

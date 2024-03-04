@@ -1,0 +1,119 @@
+{% extends 'base.html' %}{% load crispy_forms_tags %}
+{% block title %} Place
+Order {% endblock title %} {% block content %}
+{% comment %}
+<div class="row my-3">
+  <div class="col-md-6 col-12 mb-3">
+    <div class="card">
+      <h3 class="card-header mb-0">Order Summary</h3>
+      <div class="card-body">
+        {% for i in summary %}
+        <p class="card-text d-flex justify-content-between mb-2">
+          <span class="d-block"> {{i.quantity}} x {{i.product.name}} </span>
+          <span class="d-block">Rs.{{i.total}}</span>
+        </p>
+        {% empty %}
+        <h5 class="card-text font-weight-light">No items in cart.</h5>
+        {% endfor %}
+        <h4 class="card-text text-right">
+          <span class="badge badge-primary">
+            Grand Total - <b>{{cart.get_total_price| floatformat:3}} VND </b>
+          </span>
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-12">
+    <div class="card card-body">
+      <h3 class="mb-3">Shipping Details</h3>
+      <form method="POST">
+        {% csrf_token %} {{form|crispy}} {% if cart.empty %}
+        <div class="alert alert-danger my-2">Your cart is empty.</div>
+        <button disabled class="btn btn-success">Place Order</button>
+        {% else %}
+        <button type="submit" class="btn btn-success">Place Order</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% endcomment %}
+<!-- 
+<body>
+  <section class="wrapper">
+      <h1></h1>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+      <div><span class="dot" style="color:blue"></span></div>
+  </section>
+</body>
+-->
+<div class="row my-3">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+    <!--REVIEW ORDER-->
+
+    <div class="col-lg-13">
+      <hr>
+          <h3>Order Summary</h3>
+        <hr>
+        <div class="box-element">
+            <a  class="btn btn-outline-dark" href="{% url 'cart:cart_details' %}">&#x2190; Back to Cart</a>
+            <br><br>
+            <div class="row">
+              <div><h3>Numberical</h3></div> &emsp;&emsp;&emsp;
+              <div><h3>Name</h3></div>&emsp;&emsp;&emsp;
+              <div><h3>Price</h3></div>&emsp;&emsp;&emsp;
+              <div><h3>Quantity</h3></div>         
+            </div>
+            <br>
+            {% for i in summary %}
+           
+            
+            <div class="row">
+              &emsp;&emsp;&emsp;<div><h5>01</h5> </div> 
+              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<div><h5>{{i.product.name}}</h5></div>
+              &emsp;&emsp;<div><h5>{{i.product.price | floatformat:3}} VND</h5></div>
+              &emsp;&emsp;<div><h5>{{i.quantity}}</h5></div>         
+            </div>
+        {% empty %}
+        <h5 class="card-text font-weight-light">No items in cart.</h5>
+        {% endfor %}
+        <br>
+        <h4 class="card-text text-right">
+          <span class="badge badge-primary">
+            Grand Total - <b>{{cart.get_total_price| floatformat:3}} VND </b>
+          </span>
+        </h4>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="col-md-6 col-12">
+    <div class="card card-body">
+      <h3 class="mb-3">Shipping Details</h3>
+      <form method="POST">
+        {% csrf_token %} {{form|crispy}}
+      {% if cart.empty %}
+      <div class="alert alert-danger my-2">Your cart is empty.</div>
+      <button disabled class="btn btn-success">Place Order</button>
+      {% else %}
+      <button type="submit" class="btn btn-success">Place Order</button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

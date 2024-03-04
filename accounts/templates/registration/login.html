@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block title %} Login
+{% endblock title %} {% block content %}
+{% comment %}
+<div class="card auth-card card-body mx-auto my-4 shadow-sm">
+      <h1 class="display-4 text-center">Log in</h1>
+  <form method="POST">
+    {% csrf_token %} {{form|crispy}}
+    <a href="{% url 'password_reset' %}" class="mb-2 d-block"
+      >Forgot Password?</a>
+    <div class="row">
+      <div class="col-6 pr-1">
+        <button class="btn btn-primary btn-block" type="submit">Log in</button>
+      </div>
+      <div class="col-6 pl-1">
+        <button class="btn btn-danger btn-block" type="reset">Reset</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endcomment %}
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                
+                  <h2 class="display-4 text-center"><b>Log in</b></h2>
+              <form method="POST">
+                  {% csrf_token %} {{form|crispy}}
+    <a href="{% url 'password_reset' %}" class="mb-2 d-block"
+      >Forgot Password?</a>
+    <div class="row">
+      <div class="col-6 pr-1">
+        <button class="btn btn-primary btn-block" type="submit">Log in</button>
+      </div>
+      <div class="col-6 pl-1">
+        <button class="btn btn-danger btn-block" type="reset">Reset</button>
+      </div>
+    </div>
+    <br>
+
+
+    <div class="form-check d-flex justify-content mb-1 text-left">
+      <h5>Or sign in with &#160; &#160;
+      <a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook-square"></i></a> &#160;
+      <a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter-square"></i></a> &#160;
+      <a href="#" class="icoGoogle" title="Google +"><i class="fa fa-google-plus-square"></i></a></p> 
+      
+    </div>
+                  <p class=" h9 fw-bold mb-9 text-left">You don't have a acount? <a href = {%url 'register' %}>Register</a></p>
+                  {% for message in messages %}
+                  <p id='message' class="h5 fw-bold mb-5 mx-1 mx-mt-4">{{message}}</p>
+
+                  {% endfor %}
+                </form>
+
+              </div>
+              <div class="col-md-10 col-lg-8 col-xl-7 d-flex align-items-right order-1 order-lg-2">
+
+                <img src="https://png.pngtree.com/png-clipart/20220226/ourlarge/pngtree-login-interface-picture-png-image_4399756.png" align="right" class="d-block w-100" width="35" heigth="35" >
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}
